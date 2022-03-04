@@ -3,9 +3,10 @@
     <form class="column g-3 needs-validation" novalidate>
       <div class="row">
         <div class="col-md-4">
-          <label for="validationCustom01" class="form-label">Nome Completo:</label>
+          <label for="validationCustom01" class="form-label"
+            >Nome Completo:</label
+          >
           <input
-
             type="text"
             class="form-control"
             id="validationCustom01"
@@ -96,9 +97,9 @@
 export default {
   name: 'FormAgendamento',
   data() {
-    return {}
-  }
-}
+    return {};
+  },
+};
 </script>
 
 <style scoped>

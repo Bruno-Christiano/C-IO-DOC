@@ -1,13 +1,21 @@
-import {createApp} from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import Maska from 'maska'
-// import VueMask from '@devindex/vue-mask';
+import Maska from 'maska';
 
 const app = createApp(App);
 
-// app.use(VueMask);
-app.use(router).mount('#app');
-
-
 app.use(Maska);
+
+// const store = new Vuex.Store({
+//   state: {
+//     authentication: false,
+//   },
+//   mutations: {
+//     setAuthentication(state, status) {
+//       state.authentication = status;
+//     },
+//   },
+// });
+
+app.use(router).mount('#app');

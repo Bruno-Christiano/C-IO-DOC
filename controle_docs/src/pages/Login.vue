@@ -2,13 +2,12 @@
   <div id="login">
     <main>
       <h1>Faça o Login</h1>
-      <input type="text" placeholder="Usuário" />
-      <input type="password" placeholder="Senha" />
-      <router-link to="/home">
-        <button type="submit">
-          Entrar
-        </button>
-      </router-link>
+      <input type="text" placeholder="Usuário" v-model="user.name" />
+      <input type="password" placeholder="Senha" v-model="user.password" />
+      <button type="submit" @click="login()">Entrar</button>
+      <!-- <router-link to="/home">
+        
+      </router-link> -->
     </main>
   </div>
 </template>
@@ -16,22 +15,44 @@
 <script>
 export default {
   name: 'Login',
-}
+  data() {
+    return {
+      userLogin: 'adm',
+      passLogin: 'adm',
+
+      user: {
+        name: '',
+        password: '',
+      },
+    };
+  },
+  methods: {
+    login() {
+      if (this.user.name === 'adm' && this.user.password === 'adm') {
+        console.log('is authenticated!');
+      } else {
+        console.log('bad!');
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
-#login{
+#login {
   animation: slide 2.5s;
   height: 100vh;
   background: #dafaff;
 }
 
 @keyframes slide {
-  0%{
+  0% {
     transform: translateY(-80%);
-  }50%{
+  }
+  50% {
     transform: translateY(10%);
-  }100%{
+  }
+  100% {
     transform: translateY(0%);
   }
 }
@@ -60,7 +81,7 @@ main input {
   font-size: 1rem;
 }
 
-input::placeholder{
+input::placeholder {
   color: var();
 }
 
