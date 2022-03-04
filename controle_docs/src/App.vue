@@ -45,5 +45,6 @@ export default {
 
 #app {
   background: #dafaff;
+  min-height: 100vh;
 }
 </style>

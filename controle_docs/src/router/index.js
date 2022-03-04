@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../pages/Home.vue';
 import Login from '../pages/Login.vue';
 import Agendar from '../pages/Agendar.vue';
+import EditarDados from '../components/EditarDados.vue';
 
 const routes = [
   {
@@ -15,7 +16,6 @@ const routes = [
     meta: {
       hideNavbar: true,
     },
-    // component: () => import(/* webpackChunkName: "about" */ '../pages/Login.vue')
   },
   {
     path: '/home',
@@ -35,13 +35,15 @@ const routes = [
     component: Agendar,
   },
   {
-    path: '/edit',
-    name: 'Edit',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: '/agendamentos',
+    name: 'Agendamentos',
     component: () =>
-      import(/* webpackChunkName: "about" */ '../pages/Edit.vue'),
+      import(/* webpackChunkName: "about" */ '../pages/Agendamentos.vue'),
+  },
+  {
+    path: '/editar',
+    name: 'EditarDados',
+    component: EditarDados,
   },
 ];
 

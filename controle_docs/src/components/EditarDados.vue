@@ -1,11 +1,5 @@
 <template>
-  <div id="component">
-    <MensagemConclusao
-      :mensagemConclusao="message"
-      :bg_color="background"
-      :color="color"
-      v-show="message"
-    />
+  <div id="editar-dados">
     <form class="column g-3 needs-validation" @submit="send">
       <div class="row">
         <div class="col-md-4">
@@ -17,7 +11,6 @@
             type="text"
             class="form-control"
             id="validationCustom01"
-            
           />
         </div>
         <div class="col-md-4">
@@ -49,7 +42,6 @@
           <select
             class="form-select"
             id="validationCustom04"
-            
             v-model="person.doctype"
           >
             <option selected disabled value="">Escolha...</option>
@@ -84,38 +76,15 @@
         </div>
       </div>
       <div class="col-12">
-        <button type="submit">
-          <div class="svg-wrapper-1">
-            <div class="svg-wrapper">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-              >
-                <path fill="none" d="M0 0h24v24H0z"></path>
-                <path
-                  fill="currentColor"
-                  d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
-                ></path>
-              </svg>
-            </div>
-          </div>
-          <span>Enviar</span>
-        </button>
+        <button type="submit">Atualizar</button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-import useValidate from '@vuelidate/core'
-import { required, maxLength } from '@vuelidate/validators'
-import PeopleServices from '../services/PeopleServices'
-import MensagemConclusao from '../components/MensagemConclusao.vue'
-
 export default {
-  name: 'FormAgendamento',
+  name: 'EditarDados',
   data() {
     return {
       person: {
@@ -125,73 +94,14 @@ export default {
         pendencies: '',
         date: '',
         doctype: ''
-      },
-      doctypes: [],
-
-      background: '#0477bf',
-      color: 'white',
-      message: ''
-    }
-  },
-  setup() {
-    return { v$: useValidate() }
-  },
-  validations() {
-    return {
-      person: {
-        fullName: { required },
-        cpf: { required },
-        tel: { required },
-        doctype: { required },
-        date: { required },
       }
     }
-  },
-  mounted() {
-    PeopleServices.listDocTypes().then(response => {
-      // console.log(response.data);
-      this.doctypes = response.data
-      console.log(response)
-    })
-  },
-  methods: {
-    send(e) {
-      e.preventDefault()
-      this.v$.$touch()
-
-      if (this.v$.$invalid) {
-        alert('Existem campos obrigatórios vazios!')
-      } else {
-        PeopleServices.save(this.person)
-
-          .then(res => {
-            this.person = {}
-            console.log(res.data)
-            this.message = 'Agendamento efetuado com sucesso!'
-            setTimeout(() => {
-              this.message = ''
-              location.reload()
-            }, 5000)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
-    }
-  },
-  components: {
-    MensagemConclusao
   }
 }
 </script>
 
 <style scoped>
-* {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-#component {
+#editar-dados {
   min-height: 100vh;
   width: 88vw;
   margin: auto;
@@ -272,13 +182,6 @@ button:active {
 
   to {
     transform: translateY(-0.2em);
-  }
-}
-
-/*  media query */
-@media (height: 767px) {
-  #component {
-    height: 100vh;
   }
 }
 </style>
