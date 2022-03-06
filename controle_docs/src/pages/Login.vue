@@ -28,7 +28,7 @@ export default {
   methods: {
     loginUser() {
       if (
-        this.correctUser != this.user.inputUser &&
+        this.correctUser != this.user.inputUser ||
         this.correctPassword != this.user.inputPassword
       ) {
         alert('Senha ou usuário incorreto')
@@ -42,7 +42,7 @@ export default {
 
 <style scoped>
 #login {
-  animation: slide 3s;
+  animation: slide 2s;
   min-height: 100vh;
   background: #dafaff;
 }

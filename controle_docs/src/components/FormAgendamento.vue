@@ -13,17 +13,16 @@
             >Nome Completo:</label
           >
           <input
-            v-model="person.fullName"
+            v-model="schedule.fullName"
             type="text"
             class="form-control"
             id="validationCustom01"
-            
           />
         </div>
         <div class="col-md-4">
           <label for="validationCustom02" class="form-label">CPF:</label>
           <input
-            v-model="person.cpf"
+            v-model="schedule.cpf"
             v-maska="'###.###.###-##'"
             type="text"
             class="form-control"
@@ -35,7 +34,7 @@
         <div class="col-md-4">
           <label for="validationCustom02" class="form-label">Telefone:</label>
           <input
-            v-model="person.tel"
+            v-model="schedule.phone"
             v-maska="'(##) # ####-####'"
             type="tel"
             class="form-control"
@@ -49,12 +48,11 @@
           <select
             class="form-select"
             id="validationCustom04"
-            
-            v-model="person.doctype"
+            v-model="schedule.typeDocument"
           >
             <option selected disabled value="">Escolha...</option>
-            <option v-for="doc in doctypes" :key="doc.id">
-              {{ doc.type }}
+            <option v-for="doc in typeDocuments" :key="doc.id">
+              {{ doc.text }}
             </option>
           </select>
         </div>
@@ -65,7 +63,7 @@
             >Pendências <span id="obs">(Caso haja alguma)</span>:</label
           >
           <textarea
-            v-model="person.pendencies"
+            v-model="schedule.pendencyDescription"
             class="form-control"
             id="exampleFormControlTextarea1"
             rows="3"
@@ -79,12 +77,12 @@
             type="date"
             name=""
             class="form-control"
-            v-model="person.date"
+            v-model="schedule.expectedDate"
           />
         </div>
       </div>
       <div class="col-12">
-        <button type="submit">
+        <button type="submit" class="btn" :disabled="this.v$.$invalid">
           <div class="svg-wrapper-1">
             <div class="svg-wrapper">
               <svg
@@ -110,50 +108,52 @@
 
 <script>
 import useValidate from '@vuelidate/core'
-import { required, maxLength } from '@vuelidate/validators'
-import PeopleServices from '../services/PeopleServices'
+import { required, maxLength, minLength, helpers } from '@vuelidate/validators'
+import SchedulesServices from '../services/SchedulesServices'
 import MensagemConclusao from '../components/MensagemConclusao.vue'
 
 export default {
   name: 'FormAgendamento',
+
   data() {
     return {
-      person: {
+      schedule: {
         fullName: '',
         cpf: '',
-        tel: '',
-        pendencies: '',
-        date: '',
-        doctype: ''
+        phone: '',
+        pendencyDescription: '',
+        expectedDate: '',
+        typeDocument: ''
       },
-      doctypes: [],
+
+      typeDocuments: [
+        { id: 1, text: 'RG' },
+        { id: 2, text: 'CPF' },
+        { id: 3, text: 'Espelho' }
+      ],
 
       background: '#0477bf',
       color: 'white',
       message: ''
     }
   },
+
   setup() {
     return { v$: useValidate() }
   },
+
   validations() {
     return {
-      person: {
+      schedule: {
         fullName: { required },
-        cpf: { required },
-        tel: { required },
-        doctype: { required },
-        date: { required },
+        cpf: { required, minLength: minLength(14) },
+        phone: { required, minLength: minLength(16) },
+        typeDocument: { required },
+        expectedDate: { required, maxLength: maxLength(10) }
       }
     }
   },
-  mounted() {
-    PeopleServices.listDocTypes().then(response => {
-      // console.log(response.data);
-      this.doctypes = response.data
-      console.log(response)
-    })
-  },
+
   methods: {
     send(e) {
       e.preventDefault()
@@ -162,10 +162,10 @@ export default {
       if (this.v$.$invalid) {
         alert('Existem campos obrigatórios vazios!')
       } else {
-        PeopleServices.save(this.person)
+        SchedulesServices.save(this.schedule)
 
           .then(res => {
-            this.person = {}
+            this.schedule = {}
             console.log(res.data)
             this.message = 'Agendamento efetuado com sucesso!'
             setTimeout(() => {
@@ -179,6 +179,7 @@ export default {
       }
     }
   },
+
   components: {
     MensagemConclusao
   }
@@ -265,6 +266,14 @@ button:active {
   transform: scale(0.95);
 }
 
+button:disabled{
+  background: rgb(88, 88, 88);
+}
+
+.btn{
+  color: white;
+}
+
 @keyframes fly-1 {
   from {
     transform: translateY(0.2em);
@@ -272,13 +281,6 @@ button:active {
 
   to {
     transform: translateY(-0.2em);
-  }
-}
-
-/*  media query */
-@media (height: 767px) {
-  #component {
-    height: 100vh;
   }
 }
 </style>
